@@ -1,0 +1,5 @@
+package com.algafood.domain.repository;
+
+public interface CozinhaRepository {
+
+}

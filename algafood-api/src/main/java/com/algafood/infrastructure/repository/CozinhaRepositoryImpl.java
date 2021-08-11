@@ -35,7 +35,8 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 		// TODO Auto-generated method stub
 		return manager.merge(cozinha);
 	}
-
+	
+	@Transactional
 	@Override
 	public void remover(Cozinha cozinha) {
 		cozinha = buscar(cozinha.getId());

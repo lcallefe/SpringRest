@@ -1,0 +1,34 @@
+package com.algafood.infrastructure.repository;
+
+import java.util.List;
+
+import com.algafood.domain.model.Estado;
+import com.algafood.domain.repository.EstadoRepository;
+
+public class EstadoRepositoryImpl implements EstadoRepository {
+
+	@Override
+	public List<Estado> listar() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Estado buscar(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Estado salvar(Estado estado) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remover(Estado estado) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

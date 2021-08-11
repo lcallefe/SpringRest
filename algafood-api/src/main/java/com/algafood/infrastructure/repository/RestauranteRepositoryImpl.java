@@ -4,10 +4,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Component;
 
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 
+@Component
 public class RestauranteRepositoryImpl implements RestauranteRepository {
 	
 	@PersistenceContext
@@ -24,11 +28,13 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
 		return manager.find(Restaurante.class, id);
 	}
 
+	@Transactional
 	@Override
 	public Restaurante salvar(Restaurante restaurante) {
 		return manager.merge(restaurante);
 	}
 	
+	@Transactional
 	@Override
 	public void remover(Restaurante restaurante) {
 		restaurante = buscar(restaurante.getId());

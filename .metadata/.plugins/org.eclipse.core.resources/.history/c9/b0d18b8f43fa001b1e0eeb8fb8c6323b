@@ -1,0 +1,5 @@
+package com.algafood.infrastructure.repository;
+
+public class RestauranteRepositoryImpl {
+
+}
