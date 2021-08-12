@@ -35,6 +35,6 @@ public class Restaurante {
 	private Cozinha cozinha;
 	
 	@OneToMany
-	@JoinColumn(name="forma_pagamento_id", nullable = false)
+	@JoinColumn(name="restaurante_id", nullable = false)
 	private List<FormaPagamento> formasPagamento;
 }
