@@ -1,6 +1,7 @@
 package com.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +35,14 @@ public class EstadoController {
 
 	@GetMapping
 	public List<Estado> listar() {
-		return estadoRepository.listar();
+		return estadoRepository.findAll();
 	}
 	
 	@GetMapping("/{estadoId}")
 	public ResponseEntity<Estado> buscar (@PathVariable Long estadoId) {
-		Estado estado = estadoRepository.buscar(estadoId);
-		if (estado !=null) {
-			return ResponseEntity.ok(estado);
+		Optional<Estado> estado = estadoRepository.findById(estadoId);
+		if (estado.isPresent()) {
+			return ResponseEntity.ok(estado.get());
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -49,34 +50,20 @@ public class EstadoController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> adicionar(@RequestBody Estado estado) {
-		try {
-			estado = cadastroEstado.salvar(estado);
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(estado);
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest()
-								 .body(e.getMessage());
-			
-		}
+	public void adicionar(@RequestBody Estado estado) {
+		cadastroEstado.salvar(estado);
 	}
 	
 	@PutMapping("/{estadoId}") 
 	public ResponseEntity<?> atualizar(@PathVariable Long estadoId, 
 			@RequestBody Estado estado)
 	{
-		try {
-			Estado estadoAtual = estadoRepository.buscar(estadoId);
-			if (estadoAtual != null) {
-				BeanUtils.copyProperties(estado, estadoAtual, "id"); //ignora a copia da propriedade id
+			Optional<Estado> estadoAtual = estadoRepository.findById(estadoId);
+			if (estadoAtual.isPresent()) {
+				BeanUtils.copyProperties(estado, estadoAtual.get(), "id"); //ignora a copia da propriedade id
 				cadastroEstado.salvar(estado);
 				return ResponseEntity.ok(estadoAtual);
 			}
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest()
-					 .body(e.getMessage());
-
-		}
 		
 		return ResponseEntity.notFound().build();
 
