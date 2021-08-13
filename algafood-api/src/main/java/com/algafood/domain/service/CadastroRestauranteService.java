@@ -33,4 +33,9 @@ public class CadastroRestauranteService {
 		
 	}
 
+	public void excluir(Long cozinhaId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
