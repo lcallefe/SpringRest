@@ -14,4 +14,5 @@ public interface CustomizedRestauranteRepository {
 	 * não é possível alterar o nome do método no controlador
 	 */
 
+	List<Restaurante> findComFreteGratis(String nome);
 }

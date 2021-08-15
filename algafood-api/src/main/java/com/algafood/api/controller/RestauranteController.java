@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,8 +62,14 @@ public class RestauranteController {
 		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 		*/
 		
+		/*
 		return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis()
-				.and(RestauranteSpecs.comNomeSemelhante(nome)));
+				.and(RestauranteSpecs.comNomeSemelhante(nome))); */
+		
+		//em vez de passar dois metodos estaticos como parametro, vc passa só 
+		//o método implementado no repositório customizado, o que evita ficar duplicando codigo por aí
+		
+		return restauranteRepository.findComFreteGratis(nome);
 	}
 	
 	
