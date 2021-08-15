@@ -22,6 +22,8 @@ import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
+import com.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import com.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -52,6 +54,16 @@ public class RestauranteController {
 			BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 		return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
 	}
+	
+	@GetMapping("/restaurantes/com-frete-gratis")
+	public List<Restaurante> restaurantesComFreteGratis(String nome) {
+		var comFreteGratis = new RestauranteComFreteGratisSpec();
+		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+		
+		return restauranteRepository.findAll((comFreteGratis).and(comNomeSemelhante));
+	}
+	
+	
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

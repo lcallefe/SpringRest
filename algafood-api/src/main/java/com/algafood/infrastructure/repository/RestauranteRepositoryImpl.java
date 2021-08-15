@@ -55,6 +55,7 @@ public class RestauranteRepositoryImpl {
 			
 		}
 		
+		/*
 		Predicate nomePredicate = builder.like(root.get("mome"), "%" + nome + "%");
 		
 		Predicate taxaInicialPredicate = builder
@@ -63,14 +64,13 @@ public class RestauranteRepositoryImpl {
 		Predicate taxaFinalPredicate = builder
 				  .greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
 		
+		*/
+		
 		criteria.where(predicates.toArray(new Predicate[0]));
 		
 		TypedQuery<Restaurante> query  = manager.createQuery(criteria);
 		
-		return query.getResultList();
-		
-		
-		
+		return query.getResultList();	
 	}
 
 }
