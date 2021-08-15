@@ -24,6 +24,7 @@ import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
 import com.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
 import com.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
+import com.algafood.infrastructure.repository.spec.RestauranteSpecs;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -57,10 +58,12 @@ public class RestauranteController {
 	
 	@GetMapping("/restaurantes/com-frete-gratis")
 	public List<Restaurante> restaurantesComFreteGratis(String nome) {
-		var comFreteGratis = new RestauranteComFreteGratisSpec();
+		/*var comFreteGratis = new RestauranteComFreteGratisSpec();
 		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+		*/
 		
-		return restauranteRepository.findAll((comFreteGratis).and(comNomeSemelhante));
+		return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis()
+				.and(RestauranteSpecs.comNomeSemelhante(nome)));
 	}
 	
 	
