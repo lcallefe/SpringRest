@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
@@ -70,6 +71,11 @@ public class RestauranteController {
 		//o método implementado no repositório customizado, o que evita ficar duplicando codigo por aí
 		
 		return restauranteRepository.findComFreteGratis(nome);
+	}
+	
+	@GetMapping("/restaurantes/primeiro")
+	public Optional<Restaurante> buscarPrimeiro () {
+		return restauranteRepository.buscarPrimeiro(); //usando customizedJpaRepository
 	}
 	
 	

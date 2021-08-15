@@ -49,6 +49,11 @@ public class CozinhaController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	@GetMapping("/cozinhas/primeira")
+	public Optional<Cozinha> buscarPrimeiro () {
+		return cozinhaRepository.buscarPrimeiro(); //usando customizedJpaRepository
+	}
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void adicionar(@RequestBody Cozinha cozinha) {
