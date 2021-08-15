@@ -22,8 +22,6 @@ import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
-import com.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import com.algafood.infrastructure.repository.spec.RestauranteSpecs;
 
 @RestController
