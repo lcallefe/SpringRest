@@ -21,11 +21,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.model.Restaurante;
 import com.algafood.domain.repository.RestauranteRepository;
 import com.algafood.domain.service.CadastroRestauranteService;
-import com.algafood.infrastructure.repository.spec.RestauranteSpecs;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -95,7 +93,10 @@ public class RestauranteController {
 
 			Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
 			if (restauranteAtual.isPresent()) {
-				BeanUtils.copyProperties(restaurante, restauranteAtual, "id"); //ignora a copia da propriedade id
+				BeanUtils.copyProperties(restaurante, restauranteAtual, "id", 
+						 "formasPagamento", "endereco", "dataCadastro"); 
+				//ignora a copia da propriedade id
+				//formasPagamento não vai ser subistuído/deletado quando o restaurante for atualizado no banco
 				Restaurante restauranteSalvo = cadastroRestaurante.salvar(restaurante);
 				return ResponseEntity.ok(restauranteSalvo);
 			}
