@@ -5,8 +5,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algafood.domain.exception.EntidadeEmUsoException;
-import com.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.repository.CozinhaRepository;
 
@@ -26,8 +26,7 @@ public class CadastroCozinhaService {
 		try {
 			cozinhaRepository.deleteById(cozinhaId);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(
-				String.format("Não existe um cadastro de estado com código %d", cozinhaId));
+			throw new CozinhaNaoEncontradaException(cozinhaId);
 		}
 		
 		catch (DataIntegrityViolationException e) {
@@ -38,8 +37,7 @@ public class CadastroCozinhaService {
 	
 	public Cozinha buscarOuFalhar(Long cozinhaId) {
 		return cozinhaRepository.findById(cozinhaId)
-				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-						String.format("Não existe um cadastro de estado com código %d", cozinhaId)));
+				.orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));
 	}
 
 }
