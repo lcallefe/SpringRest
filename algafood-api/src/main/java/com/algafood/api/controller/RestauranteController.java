@@ -40,13 +40,8 @@ public class RestauranteController {
 	}
 	
 	@GetMapping("/{restauranteId}")
-	public ResponseEntity<Restaurante> buscar (@PathVariable Long restauranteId) {
-		Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId);
-		if (restaurante.isPresent()) {
-			return ResponseEntity.ok(restaurante.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Restaurante buscar (@PathVariable Long restauranteId) {
+		return  cadastroRestaurante.buscarOuFalhar(restauranteId);
 	}
 	
 	@GetMapping ("/restaurantes/por-nome-e-frete")
@@ -80,41 +75,24 @@ public class RestauranteController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
-			restaurante = cadastroRestaurante.salvar(restaurante);
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(restaurante);
+	public Restaurante adicionar(@RequestBody Restaurante restaurante) {
+			return cadastroRestaurante.salvar(restaurante);
 	}
 	
 	@PutMapping("/{restauranteId}") 
-	public ResponseEntity<?> atualizar(@PathVariable Long restauranteId, 
-			@RequestBody Restaurante restaurante)
-	{
-
-			Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
-			if (restauranteAtual.isPresent()) {
-				BeanUtils.copyProperties(restaurante, restauranteAtual, "id", 
-						 "formasPagamento", "endereco", "dataCadastro"); 
-				//ignora a copia da propriedade id
-				//formasPagamento não vai ser subistuído/deletado quando o restaurante for atualizado no banco
-				Restaurante restauranteSalvo = cadastroRestaurante.salvar(restaurante);
-				return ResponseEntity.ok(restauranteSalvo);
-			}
-
-		return ResponseEntity.notFound().build();
-
+	public Restaurante atualizar(@PathVariable Long restauranteId, 
+		   @RequestBody Restaurante restaurante){
+		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
+		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", 
+					"formasPagamento", "endereco", "dataCadastro"); 
+			//ignora a copia da propriedade id
+			//formasPagamento não vai ser subistuído/deletado quando o restaurante for atualizado no banco
+				return cadastroRestaurante.salvar(restaurante);
 	}
 	
 	@DeleteMapping("/{restauranteId}")
-	public ResponseEntity<Restaurante> remover(@PathVariable Long restauranteId)
-	{
-		try {
-			cadastroRestaurante.excluir(restauranteId);
-			return ResponseEntity.ok().build();
-		
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-		}
+	public void remover(@PathVariable Long restauranteId){
+		cadastroRestaurante.excluir(restauranteId);
 	}
 
 }

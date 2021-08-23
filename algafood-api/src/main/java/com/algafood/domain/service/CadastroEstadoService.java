@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.algafood.domain.exception.EntidadeEmUsoException;
 import com.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algafood.domain.model.Cozinha;
 import com.algafood.domain.model.Estado;
 import com.algafood.domain.repository.EstadoRepository;
 
@@ -33,6 +34,12 @@ public class CadastroEstadoService {
 			throw new EntidadeEmUsoException(
 				String.format("Estado de código %d não pode ser removido pois está associado a uma cidade", estadoId));
 		}
+	}
+	
+	public Estado buscarOuFalhar(Long estadoId) {
+		return estadoRepository.findById(estadoId)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format("Não existe um cadastro de estado com código %d", estadoId)));
 	}
 	
 

@@ -35,5 +35,11 @@ public class CadastroCozinhaService {
 				String.format("Estado de código %d não pode ser removido pois está associado a uma cidade", cozinhaId));
 		}
 	}
+	
+	public Cozinha buscarOuFalhar(Long cozinhaId) {
+		return cozinhaRepository.findById(cozinhaId)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(
+						String.format("Não existe um cadastro de estado com código %d", cozinhaId)));
+	}
 
 }

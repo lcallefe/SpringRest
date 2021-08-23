@@ -39,14 +39,8 @@ public class CozinhaController {
 	}
 	
 	@GetMapping("/{cozinhaId}")
-	public ResponseEntity<Cozinha> buscar (@PathVariable Long cozinhaId) {
-		Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
-		//return ResponseEntity.status(HttpStatus.OK).body(cozinha);
-		if (cozinha.isPresent()) {
-			return ResponseEntity.ok(cozinha.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Cozinha buscar (@PathVariable Long cozinhaId) {
+		return cadastroCozinha.buscarOuFalhar(cozinhaId);
 	}
 	
 	@GetMapping("/cozinhas/primeira")
@@ -61,36 +55,20 @@ public class CozinhaController {
 	}
 	
 	@PutMapping("/{cozinhaId}") 
-	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, 
+	public Cozinha atualizar(@PathVariable Long cozinhaId, 
 			@RequestBody Cozinha cozinha){
 		
-		Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
-		if (cozinhaAtual.isPresent()) {
-			BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id"); //ignora a copia da propriedade id
-			Cozinha cozinhaSalva = cadastroCozinha.salvar(cozinha);
-			
-			return ResponseEntity.ok(cozinhaSalva);
-		}
-		
-		return ResponseEntity.notFound().build();
-
+		Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
+		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id"); //ignora a copia da propriedade id
+		return cadastroCozinha.salvar(cozinha);
 	}
+		
 	
 	@DeleteMapping("/{cozinhaId}")
-	public ResponseEntity<?> remover(@PathVariable Long cozinhaId)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long cozinhaId)
 	{
-		try {
-			cozinhaRepository.deleteById(cozinhaId);
-			return ResponseEntity.ok().build();
-		
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
-			
-		} catch (EntidadeEmUsoException e) {
-			//return ResponseEntity.status(HttpStatus.CONFLICT).build();
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-		}
-	
+		cadastroCozinha.excluir(cozinhaId);
 	}
 	
 }
